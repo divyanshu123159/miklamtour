@@ -146,7 +146,7 @@ header nav a:hover { color: var(--accent-orange); }
     position: relative;
     background:
         linear-gradient(180deg, rgba(12,21,38,0.55) 0%, rgba(12,21,38,0.72) 55%, rgba(12,21,38,0.92) 100%),
-        url('hero.JPG') center/cover fixed;
+        url('https://images.unsplash.com/photo-1593364951478-f7b539e08398?q=80&w=2000&auto=format&fit=crop') center/cover fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -254,6 +254,108 @@ header nav a:hover { color: var(--accent-orange); }
     padding: 4px 10px;
     border-radius: 20px;
 }
+
+/* --- SHARED TAXI & RENTAL VEHICLE SERVICES SECTION --- */
+.services-section {
+    padding: 100px 5%;
+    background-color: var(--white);
+    text-align: center;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.services-lead {
+    max-width: 620px;
+    margin: 0 auto;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    margin-top: 48px;
+    text-align: left;
+}
+
+.service-card {
+    background: var(--bg-light);
+    padding: 40px 34px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 38px -18px rgba(20,32,60,0.22);
+}
+
+.service-icon {
+    font-size: 2.4rem;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.service-card h3 {
+    color: var(--primary-blue);
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.service-card p {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    margin-bottom: 24px;
+}
+
+.contact-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-btn:hover { transform: translateY(-2px); }
+
+.contact-whatsapp {
+    background: #25D366;
+    color: #ffffff;
+    box-shadow: 0 8px 18px -8px rgba(37, 211, 102, 0.55);
+}
+.contact-whatsapp:hover { background: #1EBE5A; }
+.contact-whatsapp::before { content: '💬'; }
+
+.contact-call {
+    background: var(--primary-blue);
+    color: #ffffff;
+    box-shadow: 0 8px 18px -8px rgba(20, 32, 60, 0.45);
+}
+.contact-call:hover { background: var(--navy-2); }
+.contact-call::before { content: '📞'; }
+
+.alt-contact {
+    margin-top: 14px;
+    margin-bottom: 0 !important;
+    font-size: 0.85rem !important;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+}
+
+.alt-contact a { color: var(--accent-orange); font-weight: 600; }
+.alt-contact a:hover { text-decoration: underline; }
 
 /* --- WHY VISIT SECTION --- */
 .why-visit {
@@ -995,6 +1097,11 @@ footer {
     .page-content { margin: 44px auto; }
 
     .auth-section { background-attachment: scroll; }
+
+    .services-section { padding: 60px 5%; }
+    .service-card { padding: 30px 22px; }
+    .contact-strip { flex-direction: column; }
+    .contact-btn { justify-content: center; }
 }
 
 /* ================= TOAST NOTIFICATIONS & CONFIRM MODAL ================= */
