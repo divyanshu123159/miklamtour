@@ -129,8 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryDate = document.getElementById('summaryDate');
     const summaryGuests = document.getElementById('summaryGuests');
     const summaryPrice = document.getElementById('summaryPrice');
-    
+    const summaryAdvance = document.getElementById('summaryAdvance');
+    const summaryBalance = document.getElementById('summaryBalance');
+
     const payableAmountElem = document.getElementById('paymentPayableAmount');
+    const balanceAmountElem = document.getElementById('paymentBalanceAmount');
+
+    // Only this fraction of the total is collected online; the rest is settled before departure.
+    const ADVANCE_PAYMENT_RATIO = 0.5;
 
     function updateSummary() {
         if (!packageSelect || !guestsInput) return; 
@@ -160,14 +166,27 @@ document.addEventListener('DOMContentLoaded', () => {
             total = total - discountAmount;
         }
 
+        // Only 50% is collected online now — the balance is paid before the trip departs.
+        const advanceAmount = Math.round(total * ADVANCE_PAYMENT_RATIO);
+        const balanceAmount = total - advanceAmount;
+
         const formattedTotal = '₹' + total.toLocaleString('en-IN');
+        const formattedAdvance = '₹' + advanceAmount.toLocaleString('en-IN');
+        const formattedBalance = '₹' + balanceAmount.toLocaleString('en-IN');
+
         summaryPrice.textContent = formattedTotal;
+        if (summaryAdvance) summaryAdvance.textContent = formattedAdvance;
+        if (summaryBalance) summaryBalance.textContent = formattedBalance;
+
         if (payableAmountElem) {
-            payableAmountElem.textContent = formattedTotal;
+            payableAmountElem.textContent = formattedAdvance;
+        }
+        if (balanceAmountElem) {
+            balanceAmountElem.textContent = formattedBalance;
         }
 
-        // Generate Dynamic UPI QR Code based on final calculated total
-        updateDynamicQR(total);
+        // Generate Dynamic UPI QR Code for the 50% advance only — not the full trip cost
+        updateDynamicQR(advanceAmount);
     }
 
     if (packageSelect) packageSelect.addEventListener('change', updateSummary);
@@ -238,9 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 guests: document.getElementById('guests').value,
                 couponUsed: appliedCouponCode || "None",
                 totalPrice: document.getElementById('summaryPrice').textContent,
-                paymentMethod: "Merchant UPI QR",
+                advancePaid: document.getElementById('summaryAdvance') ? document.getElementById('summaryAdvance').textContent : "",
+                balanceDue: document.getElementById('summaryBalance') ? document.getElementById('summaryBalance').textContent : "",
+                paymentMethod: "Merchant UPI QR - 50% Advance",
                 transactionId: utrValue,
-                paymentStatus: "Pending Verification"
+                paymentStatus: "Advance Pending Verification"
             };
 
             // LIVE GOOGLE APPS SCRIPT URL
@@ -256,9 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (result.status === "success") {
-                    submitBtn.textContent = "Booking Confirmed! ✔️";
+                    submitBtn.textContent = "Advance Confirmed! ✔️";
                     submitBtn.style.backgroundColor = "#10B981"; 
-                    showToast("Success! Your booking has been received and is pending bank verification.", "success");
+                    showToast("Success! Your 50% advance has been received and is pending bank verification. The balance is payable before departure.", "success");
                     bookingForm.reset();
                     updateSummary();
                 } else if (result.status === "error") {
