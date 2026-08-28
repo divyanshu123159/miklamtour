@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | MIKLAM Tours</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .account-container { max-width: 900px; margin: 60px auto; padding: 0 5%; }
+        .account-section { margin-bottom: 54px; }
+        .account-section h2 { color: var(--primary-blue); font-size: 1.5rem; margin-bottom: 22px; font-family: var(--font-display); font-weight: 600; }
+
+        .booking-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 26px -18px rgba(20,32,60,0.2);
+        }
+        .booking-card .details p { margin: 4px 0; color: var(--ink-soft); font-size: 0.95rem; }
+        .booking-card .details p:first-child { font-family: var(--font-display); font-size: 1.05rem; }
+        .booking-card .details strong { color: var(--text-dark); }
+
+        .status-pill {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .status-verified { background: rgba(14,138,95,0.1); color: #0E8A5F; }
+        .status-pending { background: rgba(217,164,65,0.18); color: #A5741F; }
+
+        .my-review-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 15px;
+        }
+        .my-review-card .stars { color: var(--gold); font-size: 1.05rem; margin-bottom: 8px; }
+        .my-review-card p.review-text { color: var(--ink-soft); margin-bottom: 12px; }
+        .delete-review-btn {
+            background: none;
+            border: none;
+            color: #C13C2E;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .empty-state {
+            color: var(--ink-soft);
+            text-align: center;
+            padding: 34px;
+            background: var(--bg-light);
+            border-radius: 14px;
+        }
+
+        .signin-gate {
+            text-align: center;
+            padding: 70px 20px;
+        }
+        .signin-gate a { color: var(--accent-orange); font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><a href="index.html" style="color: inherit;">MIKLAM TOURS</a></div>
+        <nav style="display: flex; gap: 20px; align-items: center;">
+            <a href="login.html" style="color: var(--primary-blue); font-weight: 600;">Sign In</a>
+            <a href="book.html" class="btn">Book Now</a>
+        </nav>
+    </header>
+
+    <div class="page-header fade-in">
+        <span class="kicker">TRAVELER DOSSIER</span>
+        <h1 style="margin-top:14px;">My Account</h1>
+        <p>Your bookings and reviews, all in one place</p>
+    </div>
+
+    <!-- Shown only if NOT logged in -->
+    <div id="signInGate" class="signin-gate" style="display: none;">
+        <p style="font-size: 1.1rem; color: #4b5563;">Please <a href="login.html">sign in</a> to view your account.</p>
+    </div>
+
+    <!-- Shown only if logged in -->
+    <div id="accountContent" class="account-container" style="display: none;">
+
+        <div class="account-section">
+            <h2>My Bookings</h2>
+            <div id="myBookingsList">
+                <p class="empty-state">Loading your bookings...</p>
+            </div>
+        </div>
+
+        <div class="account-section">
+            <h2>My Reviews</h2>
+            <div id="myReviewsList">
+                <p class="empty-state">Loading your reviews...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-bottom" style="border-top: none;">
+            <p class="copyright">&copy; 2026 MIKLAM Tours. All Rights Reserved.</p>
+            <p class="developer-credit">Designed and developed by <strong>DIVYANSHU RUDOLA</strong></p>
+        </div>
+    </footer>
+
+<script type="module" src="script.js"></script>
+<script type="module">
+    import { getFirestore, collection, query, where, orderBy, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+
+    // Reuse the same Firebase config as script.js so we hit the same project/database
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWXNnpEMjlFXv-CfpS56zJS3HRnChyU0E",
+        authDomain: "miklam-tours.firebaseapp.com",
+        projectId: "miklam-tours",
+        storageBucket: "miklam-tours.firebasestorage.app",
+        messagingSenderId: "766556566113",
+        appId: "1:766556566113:web:7ad22c335beca868923020",
+        measurementId: "G-JT2RZ0DSSB"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzsXF0LzzftL8dn4tCa9gjdewGSx4OjWBS-JiWc7j3gqpWo458emEXjhM1dnXDAsbZ_IQ/exec';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        const userEmail = localStorage.getItem("userEmail");
+        const userUid = localStorage.getItem("userUid");
+
+        const signInGate = document.getElementById('signInGate');
+        const accountContent = document.getElementById('accountContent');
+
+        if (!isLoggedIn || !userEmail) {
+            signInGate.style.display = "block";
+            accountContent.style.display = "none";
+            return;
+        }
+
+        signInGate.style.display = "none";
+        accountContent.style.display = "block";
+
+        loadMyBookings(userEmail);
+        loadMyReviews(userUid);
+    });
+
+    async function loadMyBookings(email) {
+        const container = document.getElementById('myBookingsList');
+        try {
+            const response = await fetch(`${scriptURL}?action=getUserBookings&email=${encodeURIComponent(email)}`);
+            const data = await response.json();
+
+            if (data.status !== "success" || !data.bookings || data.bookings.length === 0) {
+                container.innerHTML = '<p class="empty-state">You have no bookings yet. <a href="book.html">Plan your Spiti trip →</a></p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            data.bookings.forEach(b => {
+                const isVerified = (b.status === "Verified / Paid" || b.status === "Confirmed");
+                const statusHTML = isVerified
+                    ? `<span class="status-pill status-verified">Confirmed</span>`
+                    : `<span class="status-pill status-pending">Pending Verification</span>`;
+
+                container.innerHTML += `
+                    <div class="booking-card">
+                        <div class="details">
+                            <p><strong>${b.package}</strong></p>
+                            <p>Travel Date: ${b.travelDate} &nbsp;•&nbsp; Guests: ${b.guests}</p>
+                            <p>Total: ${b.total} &nbsp;•&nbsp; UTR: ${b.utr}</p>
+                        </div>
+                        ${statusHTML}
+                    </div>
+                `;
+            });
+        } catch (error) {
+            console.error("Error loading bookings:", error);
+            container.innerHTML = '<p class="empty-state">Couldn\'t load your bookings. Please try again later.</p>';
+        }
+    }
+
+    async function loadMyReviews(uid) {
+        const container = document.getElementById('myReviewsList');
+        if (!uid) {
+            container.innerHTML = '<p class="empty-state">No review history found for this account.</p>';
+            return;
+        }
+        try {
+            // No orderBy here on purpose — avoids needing a Firestore composite index.
+            // We sort by timestamp in JavaScript instead, right after fetching.
+            const q = query(collection(db, "reviews"), where("reviewerUid", "==", uid));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                container.innerHTML = '<p class="empty-state">You haven\'t written a review yet. <a href="book.html">Share your experience →</a></p>';
+                return;
+            }
+
+            const reviews = [];
+            querySnapshot.forEach(docSnap => {
+                reviews.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            // Sort newest first (timestamp is a Firestore Timestamp object with .toMillis())
+            reviews.sort((a, b) => {
+                const aTime = a.timestamp ? a.timestamp.toMillis() : 0;
+                const bTime = b.timestamp ? b.timestamp.toMillis() : 0;
+                return bTime - aTime;
+            });
+
+            container.innerHTML = '';
+            reviews.forEach(data => {
+                const starsHTML = '★'.repeat(data.rating) + '<span style="color:#e5e7eb;">★</span>'.repeat(5 - data.rating);
+
+                container.innerHTML += `
+                    <div class="my-review-card">
+                        <div class="stars">${starsHTML}</div>
+                        <p class="review-text">"${data.text}"</p>
+                        <button class="delete-review-btn" onclick="window.deleteAccountReview('${data.id}')">🗑️ Delete this review</button>
+                    </div>
+                `;
+            });
+        } catch (error) {
+            console.error("Error loading your reviews:", error);
+            container.innerHTML = '<p class="empty-state">Couldn\'t load your reviews. Please try again later.</p>';
+        }
+    }
+
+    window.deleteAccountReview = async function(reviewId) {
+        if (!(await window.showConfirm("Delete this review? This can't be undone."))) return;
+        try {
+            await deleteDoc(doc(db, "reviews", reviewId));
+            const uid = localStorage.getItem("userUid");
+            loadMyReviews(uid);
+        } catch (error) {
+            console.error("Error deleting review:", error);
+            window.showToast("Couldn't delete the review. Please try again.", "error");
+        }
+    };
+</script>
+</body>
+</html>

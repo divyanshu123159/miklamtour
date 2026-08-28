@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Spiti Journey - MIKLAM Tours</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="logo">MIKLAM TOURS</div>
+        <nav>
+            <a href="index.html" class="btn" style="background-color: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); padding: 8px 18px;">Back to Home</a>
+        </nav>
+    </header>
+
+    <!-- Booking Section -->
+    <section class="booking-section">
+        <div class="booking-container">
+            
+            <!-- Main Booking Form Wrapper -->
+            <div class="booking-form-wrapper">
+                <span class="kicker" style="margin-bottom: 14px;">RESERVE YOUR SEATS</span>
+                <h2 style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 25px; font-family: var(--font-display);">Plan Your Spiti Journey</h2>
+                
+                <form id="bookingForm" class="booking-form">
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number (WhatsApp)</label>
+                            <input type="tel" id="phone" placeholder="e.g. +91 9876543210" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="packageSelect">Select Tour Package</label>
+                        <select id="packageSelect" required>
+                            <option value="" disabled selected>-- Choose a Package --</option>
+                            <option value="Spiti Classic Expedition" data-price="15000">Spiti Classic Expedition: ₹15,000 / person</option>
+                            <option value="Chandratal Special Retreat" data-price="18500">Chandratal Special Retreat: ₹18,500 / person</option>
+                            <option value="Himalayan Monastic Trail" data-price="22000">Himalayan Monastic Trail: ₹22,000 / person</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="travelDate">Travel Date</label>
+                            <input type="date" id="travelDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Number of Guests</label>
+                            <input type="number" id="guests" min="1" max="10" value="1" required>
+                        </div>
+                    </div>
+
+                    <!-- Coupon Code Section -->
+                    <div class="coupon-section" style="margin: 20px 0; padding: 18px; background: var(--bg-light); border: 1.5px dashed #E3DACB; border-radius: 10px;">
+                        <label for="couponCode" style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--text-dark);">Have a Coupon Code?</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="couponCode" placeholder="e.g. MIKLAM10" style="flex: 1; padding: 11px; border: 1.5px solid #E3DACB; background: var(--white); border-radius: 8px; font-size: 0.9rem; text-transform: uppercase; font-family: var(--font-mono);">
+                            <button type="button" id="applyCouponBtn" style="background: var(--primary-blue); color: white; border: none; padding: 0 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: background 0.25s ease;">Apply</button>
+                        </div>
+                        <small id="couponMessage" style="display: block; margin-top: 6px; font-size: 0.78rem; color: var(--ink-soft);"></small>
+                    </div>
+
+                    <!-- Designer Merchant UPI Payment Section -->
+                    <div class="payment-card" style="margin-top: 30px; padding: 28px; background: #ffffff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 16px 34px -18px rgba(20,32,60,0.2);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 15px;">
+                            <h3 style="font-size: 1.2rem; color: var(--text-dark); margin: 0; font-family: var(--font-display);">Secure UPI Checkout</h3>
+                            <span style="background: rgba(14,138,95,0.1); color: #0E8A5F; padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">Instant Verification</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: center;">
+                            <!-- QR Code Box -->
+<div style="text-align: center; background: var(--bg-light); padding: 15px; border-radius: 12px; border: 1.5px dashed #E3DACB;">
+    <!-- Dynamic image tag with ID and hidden by default -->
+    <img id="dynamicUpiQr" src="" alt="Scan to Pay" style="width: 150px; height: 150px; object-fit: contain; margin: 0 auto 10px; display: none; border-radius: 6px;">
+    
+    <!-- Placeholder text that displays before a package/price is selected -->
+    <span id="qrPlaceholder" style="font-size: 0.8rem; color: var(--ink-soft); display: block; padding: 40px 0;">Select package to generate QR</span>
+    
+    <span style="font-size: 0.75rem; color: var(--ink-soft); display: block; margin-top: 5px;">Scan with GPay, PhonePe, Paytm</span>
+</div>
+
+                            <!-- Details & Payable Amount -->
+                            <div>
+                                <div style="margin-bottom: 15px;">
+                                    <span style="font-size: 0.82rem; color: var(--ink-soft); display: block; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">Total Payable Amount</span>
+                                    <strong id="paymentPayableAmount" style="font-size: 1.7rem; color: var(--primary-blue); font-family: var(--font-display);">₹0</strong>
+                                </div>
+
+                                <div style="margin-bottom: 15px;">
+                                    <span style="font-size: 0.82rem; color: var(--ink-soft); display: block; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">Merchant UPI ID</span>
+                                    <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-light); padding: 8px 10px; border-radius: 8px;">
+                                <code style="font-size: 0.85rem; color: var(--text-dark); font-weight: 600; font-family: var(--font-mono); overflow-wrap: anywhere;">SBIBHIM.INSTANT92854251487043657@SBIPAY</code>
+                                        <button type="button" onclick="navigator.clipboard.writeText('miklamtours@upi'); window.showToast('UPI ID Copied!', 'success');" style="background: none; border: none; color: var(--accent-orange); font-size: 0.8rem; cursor: pointer; font-weight: 700; margin-left: auto; white-space: nowrap;">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UTR Input Field -->
+                        <div style="margin-top: 20px;">
+                            <label for="transactionId" style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text-dark);">Enter 12-Digit UPI Reference / UTR Number <span style="color: var(--accent-orange);">*</span></label>
+                            <input type="text" id="transactionId" name="transactionId" placeholder="e.g. 423456789012" pattern="[0-9]{12}" maxlength="12" required style="width: 100%; padding: 13px 15px; border: 1.5px solid #E3DACB; background: var(--bg-light); border-radius: 8px; font-size: 1rem; font-family: var(--font-mono);">
+                            <small style="display: block; color: var(--ink-soft); font-size: 0.8rem; margin-top: 5px;">Enter the reference number from your app after completing the payment to lock your seats.</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-full" style="margin-top: 25px;">Confirm & Book Seats</button>
+                </form>
+            </div>
+
+            <!-- Booking Summary Sidebar -->
+            <div class="booking-summary">
+                <h3 style="font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;">Booking Summary</h3>
+                
+                <div class="summary-details">
+                    <p>Package: <span id="summaryPackage">None Selected</span></p>
+                    <p>Date: <span id="summaryDate">Not Set</span></p>
+                    <p>Guests: <span id="summaryGuests">1</span></p>
+                </div>
+
+                <div class="summary-total">
+                    <p style="font-size: 0.9rem; color: #e2e8f0;">Estimated Total</p>
+                    <h2 id="summaryPrice">₹0</h2>
+                    <small style="display: block; font-size: 0.75rem; color: #cbd5e1; margin-top: 10px;">*Taxes included. Verified automatically via UTR tracking.</small>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= REVIEWS SECTION ================= -->
+    <section class="reviews-section">
+        <span class="kicker">TRAVELER LOG</span>
+        <h2 class="section-title" style="margin-top: 16px;">What Travelers Say</h2>
+        <p style="color: var(--ink-soft); margin-top: -20px; margin-bottom: 40px;">Real experiences from real Spiti travelers</p>
+
+        <!-- Existing Reviews Grid (populated by script.js via Firestore) -->
+        <div id="reviewsGrid" class="reviews-grid">
+            <p style="color: #666; grid-column: 1 / -1; text-align: center;">Loading reviews...</p>
+        </div>
+
+        <!-- Write a Review -->
+        <div class="modern-review-form-wrapper">
+
+            <!-- Shown when logged in -->
+            <div class="user-greeting" id="userGreetingReview" style="display: none;">
+                <div class="avatar-small">👤</div>
+                <span>Posting as <strong id="reviewerNameDisplay"></strong></span>
+            </div>
+
+            <form id="reviewForm" style="display: none;">
+                <div class="star-rating-input">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                <input type="hidden" id="ratingValue" value="0">
+
+                <textarea id="reviewTextInput" rows="4" placeholder="Share your experience with MIKLAM Tours..." required></textarea>
+
+                <button type="submit" class="btn btn-full">Post Review</button>
+            </form>
+
+            <!-- Shown when NOT logged in -->
+            <p class="login-prompt" id="loginPrompt">
+                Please <a href="login.html">sign in</a> to write a review.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main JavaScript File -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
