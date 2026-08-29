@@ -138,6 +138,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only this fraction of the total is collected online; the rest is settled before departure.
     const ADVANCE_PAYMENT_RATIO = 0.5;
 
+    // Pre-select a package if arriving from package.html's "Book This Package" links
+    // (e.g. book.html?package=Spiti%20Classic%20Expedition)
+    if (packageSelect) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedPackage = urlParams.get('package');
+        if (requestedPackage) {
+            const matchingOption = Array.from(packageSelect.options).find(
+                opt => opt.value === requestedPackage
+            );
+            if (matchingOption) {
+                packageSelect.value = requestedPackage;
+                updateSummary(); // hoisted function declaration, safe to call here
+            }
+        }
+    }
+
     function updateSummary() {
         if (!packageSelect || !guestsInput) return; 
 
