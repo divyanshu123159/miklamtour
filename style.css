@@ -146,7 +146,7 @@ header nav a:hover { color: var(--accent-orange); }
     position: relative;
     background:
         linear-gradient(180deg, rgba(12,21,38,0.55) 0%, rgba(12,21,38,0.72) 55%, rgba(12,21,38,0.92) 100%),
-        url('hero.JPG') center/cover fixed;
+        url('https://images.unsplash.com/photo-1593364951478-f7b539e08398?q=80&w=2000&auto=format&fit=crop') center/cover fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1013,95 +1013,139 @@ footer {
 /* 📱 MASTER MOBILE MEDIA QUERIES 📱 */
 /* ========================================== */
 @media (max-width: 768px) {
+    html { -webkit-text-size-adjust: 100%; }
+    body { overflow-x: hidden; }
+    img { max-width: 100%; }
+
+    /* --- Header --- */
     header {
         padding: 12px 5%;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
         gap: 10px;
     }
+    .logo { font-size: 1.08rem; white-space: nowrap; }
+    header nav, header div { display: flex; align-items: center; gap: 10px; }
+    header nav a:not(.btn) { font-size: 0.84rem; }
+    header .btn { padding: 10px 16px; font-size: 0.84rem; border-radius: 7px; }
 
-    .logo {
-        font-size: 1.1rem;
-        white-space: nowrap;
-    }
-
-    header nav, header div {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    header a {
-        font-size: 0.88rem;
-    }
-
-    header .btn {
-        padding: 9px 16px;
-        font-size: 0.85rem;
-    }
-
+    /* --- Hero --- */
     .hero {
-        height: 56vh;
-        min-height: 420px;
-        padding: 20px 15px;
+        height: auto;
+        min-height: 82vh;
+        padding: 90px 20px 50px;
         background-attachment: scroll;
+        background-position: center 30%;
     }
+    .hero .kicker { font-size: 0.7rem; margin-bottom: 16px; }
+    .hero h1 { font-size: 2.15rem; line-height: 1.14; margin-bottom: 14px; letter-spacing: -0.02em; }
+    .hero p { font-size: 1rem; line-height: 1.55; margin-bottom: 26px; max-width: 90%; }
+    .hero .btn { width: 100%; max-width: 300px; padding: 15px 26px; font-size: 1.02rem; }
 
-    .hero h1 {
-        font-size: 2rem;
-        line-height: 1.18;
-        margin-bottom: 12px;
+    /* --- Section rhythm (shared across content sections) --- */
+    .spiti-views, .why-visit, .best-time, .cta-section, .services-section, .reviews-section {
+        padding: 64px 6% !important;
     }
+    .section-title { font-size: 1.75rem; line-height: 1.2; }
+    .kicker { font-size: 0.72rem; }
 
-    .hero p {
-        font-size: 0.98rem;
-        margin-bottom: 22px;
-    }
+    /* --- Destinations grid --- */
+    .views-grid { grid-template-columns: 1fr; gap: 18px; margin: 34px 0 28px; }
+    .view-card img { height: 200px; }
+    .view-card h3 { font-size: 1.15rem; padding: 16px 18px 6px; }
+    .view-card .alt-tag { margin: 0 18px 16px; }
 
-    .hero .btn {
-        padding: 11px 26px;
-        font-size: 1rem;
-    }
+    /* --- Services (taxi/rental) --- */
+    .services-lead { font-size: 0.98rem; padding: 0 4px; }
+    .services-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 34px; }
+    .service-card { padding: 28px 22px; }
+    .service-icon { font-size: 2.1rem; margin-bottom: 12px; }
+    .service-card h3 { font-size: 1.15rem; }
+    .service-card p { font-size: 0.94rem; }
+    .contact-strip { flex-direction: column; gap: 10px; }
+    .contact-btn { justify-content: center; width: 100%; padding: 13px 18px; }
+    .alt-contact { font-size: 0.78rem !important; }
 
-    .section-title { font-size: 1.9rem; }
+    /* --- Why visit --- */
+    .reasons-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 34px; }
+    .reason-card { padding: 32px 24px; }
+    .reason-icon { font-size: 2.2rem; margin-bottom: 14px; }
+    .reason-card h3 { font-size: 1.2rem; }
 
-    .booking-section {
-        padding: 30px 15px 60px;
-    }
+    /* --- Best time --- */
+    .seasons-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 34px; }
+    .season-card { padding: 30px 24px; }
+    .season-card h3 { font-size: 1.2rem; }
 
-    .booking-container {
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
+    /* --- CTA --- */
+    .cta-section h2 { font-size: 1.85rem; }
+    .cta-subtitle { font-size: 0.98rem; }
+    .cta-section .btn { width: 100%; max-width: 320px; font-size: 1.05rem; padding: 15px 30px; }
 
-    .booking-form-wrapper {
-        width: 100%;
-        padding: 26px 18px;
-    }
+    /* --- Footer --- */
+    footer { padding: 50px 7% 22px; }
+    .footer-content { grid-template-columns: 1fr; gap: 34px; text-align: center; margin-bottom: 36px; }
+    .footer-col a, .footer-col p { justify-content: center; }
 
-    .form-group-row {
-        flex-direction: column;
-        gap: 0;
-    }
+    /* --- Page header / content (about, info, terms, account) --- */
+    .page-header { padding: 74px 22px 50px; }
+    .page-header h1 { font-size: 2rem; }
+    .page-header p { font-size: 1rem; }
+    .page-content { margin: 40px auto; }
+    .page-content h2 { font-size: 1.35rem; margin: 30px 0 14px; }
+    .page-content p, .page-content ul { font-size: 1rem; }
 
-    .booking-summary {
-        position: static;
-        width: 100%;
-        padding: 24px 20px;
-    }
+    /* --- Booking page --- */
+    .booking-section { padding: 34px 5% 60px; }
+    .booking-container { flex-direction: column; gap: 20px; width: 100%; }
+    .booking-form-wrapper { width: 100%; padding: 26px 20px; border-radius: 14px; }
+    .booking-form-wrapper h2 { font-size: 1.6rem !important; }
+    .form-group-row { flex-direction: column; gap: 0; }
+    .booking-form input, .booking-form select { padding: 13px 14px; font-size: 0.98rem; }
+    .payment-card { padding: 22px 18px !important; }
+    .btn-full { padding: 15px; font-size: 1.05rem; }
+    .booking-summary { position: static; width: 100%; padding: 24px 22px; border-radius: 14px; }
+    .summary-total h2 { font-size: 2.1rem; }
 
-    .page-header { padding: 70px 20px 56px; }
-    .page-header h1 { font-size: 2.2rem; }
-    .page-content { margin: 44px auto; }
+    /* --- Auth (login/signup) --- */
+    .auth-section { background-attachment: scroll; min-height: 100vh; padding: 30px 16px; align-items: flex-start; padding-top: 60px; }
+    .auth-card { max-width: 100%; border-radius: 14px; }
+    .auth-form { padding: 32px 24px; }
+    .auth-tab { padding: 15px 0; font-size: 0.95rem; }
+    .auth-extras { flex-wrap: wrap; gap: 10px; }
 
-    .auth-section { background-attachment: scroll; }
+    /* --- Reviews & review form --- */
+    .reviews-grid { grid-template-columns: 1fr; gap: 18px; margin: 32px 0 44px; }
+    .review-card { padding: 26px; }
+    .modern-review-form-wrapper { padding: 30px 22px; border-radius: 16px; }
+    .star-rating-input { font-size: 2.1rem; gap: 8px; margin-bottom: 20px; }
+    #reviewTextInput { padding: 15px; font-size: 0.98rem; }
 
-    .services-section { padding: 60px 5%; }
-    .service-card { padding: 30px 22px; }
-    .contact-strip { flex-direction: column; }
-    .contact-btn { justify-content: center; }
+    /* --- Account page --- */
+    .account-container { margin: 40px auto; }
+    .booking-card, .my-review-card { padding: 18px; }
+    .booking-card { flex-direction: column; align-items: flex-start; }
+
+    /* --- Any table-based content (owner dashboard etc.) --- */
+    .table-wrapper { -webkit-overflow-scrolling: touch; padding: 14px; }
+    table { font-size: 0.85rem; }
+    th, td { padding: 10px; }
+}
+
+@media (max-width: 400px) {
+    header { padding: 10px 4%; }
+    .logo { font-size: 0.95rem; }
+    header nav a:not(.btn) { font-size: 0.78rem; }
+    header .btn { padding: 8px 13px; font-size: 0.78rem; }
+
+    .hero h1 { font-size: 1.7rem; }
+    .hero p { font-size: 0.92rem; }
+    .kicker { font-size: 0.65rem; gap: 6px; }
+    .kicker::before { width: 12px; }
+    .section-title { font-size: 1.5rem; }
+
+    .view-card img { height: 170px; }
+    .reason-card, .season-card, .service-card { padding: 24px 18px; }
+    .auth-form { padding: 26px 18px; }
+    .modern-review-form-wrapper { padding: 24px 16px; }
 }
 
 /* ================= TOAST NOTIFICATIONS & CONFIRM MODAL ================= */
