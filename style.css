@@ -1258,3 +1258,220 @@ footer {
 }
 
 .modal-btn-confirm:hover { background: var(--accent-hover); }
+
+/* ======================================================================
+   PACKAGE ITINERARY + ROADMAP TIMELINE
+   Reuses the "expedition dossier" language: mono data tags, gold trail
+   line, contour-line dark panels — extends the existing system rather
+   than introducing a new one.
+   ====================================================================== */
+
+/* Standalone reusable pill — same visual as .view-card .alt-tag but not
+   scoped to a parent, so it can be used in timelines, package headers, etc. */
+.tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--accent-orange);
+    background: rgba(193, 89, 46, 0.09);
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.tag-pill.tag-pill-navy {
+    color: var(--primary-blue);
+    background: rgba(20, 32, 60, 0.07);
+}
+
+/* --- Timeline (used for both day-by-day itineraries and the taxi road route) --- */
+.timeline {
+    position: relative;
+    max-width: 760px;
+    margin: 0 auto;
+    padding-left: 44px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold) 0%, rgba(217,164,65,0.15) 100%);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 42px;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+    position: absolute;
+    left: -44px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 3px solid var(--gold);
+    z-index: 1;
+}
+
+.timeline-item .timeline-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.timeline-item h3 {
+    font-family: var(--font-display);
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.timeline-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.timeline-item p {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.7;
+}
+
+/* --- Package tab switcher --- */
+.package-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 40px 0 56px;
+}
+
+.package-tab-btn {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 13px 26px;
+    border-radius: 30px;
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.package-tab-btn:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+
+.package-tab-btn.active {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--white);
+    box-shadow: 0 10px 22px -10px rgba(20,32,60,0.4);
+}
+
+.package-panel { display: none; }
+.package-panel.active { display: block; animation: fadeInPanel 0.4s ease; }
+
+@keyframes fadeInPanel {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.package-panel-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 56px;
+}
+
+.package-panel-header h2 {
+    font-family: var(--font-display);
+    color: var(--primary-blue);
+    font-size: 2.1rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.package-panel-header p {
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    margin-bottom: 20px;
+}
+
+.package-meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.package-book-cta {
+    text-align: center;
+    margin-top: 56px;
+    padding-top: 44px;
+    border-top: 1px solid var(--line);
+}
+
+.package-book-cta p {
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+    font-size: 0.98rem;
+}
+
+/* --- Cross-link banner (bottom-of-page redirect strip) --- */
+.cross-link-banner {
+    max-width: 780px;
+    margin: 90px auto 0;
+    background: var(--navy-deep);
+    background-image: var(--contour);
+    background-size: 280px 280px;
+    color: var(--white);
+    border-radius: 20px;
+    padding: 52px 44px;
+    text-align: center;
+    box-shadow: 0 24px 50px -24px rgba(12,21,38,0.5);
+}
+
+.cross-link-banner .kicker { justify-content: center; margin-bottom: 18px; }
+
+.cross-link-banner h3 {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.cross-link-banner p {
+    color: #D9DEE8;
+    max-width: 520px;
+    margin: 0 auto 28px;
+    font-size: 1.02rem;
+    line-height: 1.7;
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+    .timeline { padding-left: 34px; }
+    .timeline-dot { left: -34px; width: 16px; height: 16px; }
+    .timeline-item h3 { font-size: 1.15rem; }
+    .package-tab-btn { padding: 11px 18px; font-size: 0.85rem; }
+    .package-panel-header h2 { font-size: 1.7rem; }
+    .cross-link-banner { padding: 40px 26px; margin-top: 60px; }
+    .cross-link-banner h3 { font-size: 1.4rem; }
+}
